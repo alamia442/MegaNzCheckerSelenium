@@ -9,13 +9,16 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor
 from random import choice
-from os import name,system
+from os import name,system,environ
 from sys import stdout
 from threading import Thread,Lock
 from beautifultable import BeautifulTable
 from datetime import datetime
 import json
 import requests
+
+GOOGLE_CHROME_DRIVER = environ.get("GOOGLE_CHROME_DRIVER")
+GOOGLE_CHROME_BIN = environ.get("GOOGLE_CHROME_BIN")
 
 class Main:
 
@@ -175,6 +178,7 @@ class Main:
 
             useragent = self.GetRandomUserAgent()
                 
+            options.binary_location = GOOGLE_CHROME_BIN
             options.add_argument(f'--user-agent={useragent}')
             options.add_argument('--no-sandbox')
             options.add_argument('--log-level=3')
@@ -189,7 +193,7 @@ class Main:
             options.add_argument("window-size=1280,800")
             options.add_argument('--disable-blink-features=AutomationControlled')
 
-            driver = webdriver.Chrome(options=options)
+            driver = webdriver.Chrome(options=options, executable_path=f"{GOOGLE_CHROME_DRIVER}", )
 
             driver.get('https://mega.nz/login')
             try:
